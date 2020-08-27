@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  pure-postgres:
+    image: postgres:13
+    container_name: pure-postgres-13
+    hostname: pure-postgres-13
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pure
+    volumes:
+      - ./postgresql.auto.conf:/var/lib/postgresql/data/postgresql.conf
+    ports:
+      - "5432:5432"
