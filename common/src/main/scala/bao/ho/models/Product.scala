@@ -1,7 +1,7 @@
 package bao.ho.models
 
 import bao.ho.CoercibleCodecs
-import bao.ho.newtypes.NewTypes.{LanguageCode, ProductId, ProductName}
+import bao.ho.newtypes.NewTypes.ProductId
 import cats.data.NonEmptyList
 import io.circe.{Decoder, Encoder}
 //import io.circe.generic.semiauto._
@@ -13,7 +13,7 @@ final case class Product(id: ProductId, names: NonEmptyList[Translation])
 object Product extends CoercibleCodecs {
 //  import io.circe.refined._ very important
 
-  def fromDatabase(rows: Seq[(ProductId, LanguageCode, ProductName)]): Option[Product] = ???
+  def fromDatabase[T](rows: List[T]): Option[Product] = ???
 //  {
 //    val po = for {
 //      (id, c, n) <- rows.headOption

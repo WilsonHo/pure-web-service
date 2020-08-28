@@ -3,9 +3,15 @@ package bao.ho.routes
 //import bao.ho.models.Product
 import java.util.UUID
 
+import bao.ho.CoercibleCodecs
+import org.http4s.circe._
 import bao.ho.newtypes.NewTypes.ProductId
 import bao.ho.repo.Repository
-import org.http4s.HttpRoutes
+import bao.ho.repo.Repository.Result
+//import io.estatico.newtype.Coercible
+//import bao.ho.repo.Repository.Result
+import cats.Applicative
+import org.http4s.{EntityDecoder, EntityEncoder, HttpRoutes}
 import org.http4s.dsl.Http4sDsl
 import org.http4s.server.Router
 import cats.effect.Sync
@@ -16,11 +22,27 @@ import cats.effect.Sync
 //import org.http4s._
 //import org.http4s.circe._
 //import org.http4s.dsl._
+import io.circe.{Decoder, Encoder}
+//import io.circe.generic.semiauto._
+import io.circe.generic.semiauto._
+//import io.estatico.newtype.ops._
 
 final class ProductsRoutes[F[_]](repo: Repository[F])(implicit F: Sync[F]) extends Http4sDsl[F] {
-  private[routes] val prefixPath = "/products"
-//  implicit def decodeProduct     = jsonOf
-//  implicit def encodeProduct     = jsonEncoderOf
+  import io.circe.refined._
+
+  object Result extends CoercibleCodecs {
+    implicit val decode: Decoder[Result] = deriveDecoder[Result]
+
+    implicit val encode: Encoder[Result] = deriveEncoder[Result]
+  }
+
+  import Result._
+  private[routes] val prefixPath                                          = "/products"
+  implicit def decodeProduct: EntityDecoder[F, Result]                    = jsonOf[F, Result]
+  implicit def encodeProduct[A[_]: Applicative]: EntityEncoder[A, Result] = jsonEncoderOf[A, Result]
+
+  implicit def encodeProduct1[A[_]: Applicative]: EntityEncoder[A, List[Result]] =
+    jsonEncoderOf[A, List[Result]]
 
   import cats.syntax.functor._
   import cats.syntax.flatMap._
@@ -29,8 +51,7 @@ final class ProductsRoutes[F[_]](repo: Repository[F])(implicit F: Sync[F]) exten
     case GET -> Root =>
       for {
         m  <- repo.loadProduct(ProductId(UUID.randomUUID()))
-        x  = m.head._3.value.value
-        rs <- Ok(x)
+        rs <- Ok(m)
       } yield rs
 
 //        .map(_.head._3.value.value)

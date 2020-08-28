@@ -3,6 +3,7 @@ package bao.ho.routes
 import bao.ho.models.Product
 import bao.ho.newtypes.NewTypes.ProductId
 import bao.ho.repo.Repository
+import bao.ho.repo.Repository.Result
 import cats.Applicative
 import cats.effect.Sync
 import cats.implicits._
@@ -21,7 +22,7 @@ final class ProductRoutes[F[_]](repo: Repository[F])(implicit F: Sync[F]) extend
     case GET -> Root / UUIDVar(id) =>
       for {
         rows <- repo.loadProduct(ProductId(id))
-        resp <- Product.fromDatabase(rows).fold(NotFound())(p => Ok(p))
+        resp <- Product.fromDatabase[Result](rows).fold(NotFound())(p => Ok(p))
       } yield resp
     case req @ PUT -> Root / UUIDVar(_) =>
       req
