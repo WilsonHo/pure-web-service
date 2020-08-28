@@ -20,7 +20,6 @@ final class ProductRoutes[F[_]](repo: Repository[F])(implicit F: Sync[F]) extend
   private val httpRoutes: HttpRoutes[F] = HttpRoutes.of[F] {
     case GET -> Root / UUIDVar(id) =>
       for {
-        _    <- F.delay(println("Hello"))
         rows <- repo.loadProduct(ProductId(id))
         resp <- Product.fromDatabase(rows).fold(NotFound())(p => Ok(p))
       } yield resp

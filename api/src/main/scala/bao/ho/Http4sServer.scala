@@ -45,7 +45,7 @@ object Http4sServer {
       productsRoutes = new ProductsRoutes(repo)
       routes         = productRoutes.routes <+> productsRoutes.routes
       httpApp        = Router("/" -> routes).orNotFound
-      finalHttpApp   = Logger.httpApp(true, true)(httpApp)
+      finalHttpApp   = Logger.httpApp(false, false)(httpApp)
       exitCode <- BlazeServerBuilder[F](global)
                    .bindHttp(apiConfig.port, apiConfig.host)
                    .withHttpApp(finalHttpApp)

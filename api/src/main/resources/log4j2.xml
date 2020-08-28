@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <!-- Collisions on logs in Tomcat Based on This Need to Be Avoided - How without using path or knowing /stevef /develop etc?-->
+        <RollingFile name="file" fileName="./logs/application.log" filePattern="./logs/application.%d{yyyy-MM-dd}.%i.log.gz" append="false">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p [%t] %c{10}:%L - %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5p [%t] %c{10}:%L - %m%n"/>
+        </Console>
+    </Appenders>
+
+
+    <Loggers>
+        <Root level="${env:LOG_LEVEL:-INFO}">
+            <AppenderRef ref="file"/>
+            <AppenderRef ref="console" />
+        </Root>
+    </Loggers>
+</Configuration>

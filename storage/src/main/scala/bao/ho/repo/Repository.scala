@@ -5,7 +5,7 @@ import bao.ho.models.Product
 import fs2._
 
 trait Repository[F[_]] {
-  def loadProduct(id: ProductId): F[Seq[(ProductId, LanguageCode, ProductName)]]
+  def loadProduct(id: ProductId): F[List[(ProductId, LanguageCode, ProductName)]]
 
   def loadProducts(): Stream[F, (ProductId, LanguageCode, ProductName)]
 
