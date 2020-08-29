@@ -8,7 +8,7 @@ lazy val commonSettings = Seq(
 )
 
 lazy val root = (project in file("."))
-  .settings(name := "fp-scala-shopping-cart")
+  .settings(name := "pure-web-service")
 
 lazy val common = (project in file("common"))
   .settings(name := "common")

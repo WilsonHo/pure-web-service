@@ -41,12 +41,12 @@ object CirceRefinedExample {
     val recipient = Recipient("@marcin")
     val body      = MessageBody("How are you?")
 
-//    val id    = LanguageCode("vn")
-//    val names = ProductName("Translation")
-//    val p     = Translation(id, names)
-//    println(p)
+    //    val id    = LanguageCode("vn")
+    //    val names = ProductName("Translation")
+    //    val p     = Translation(id, names)
+    //    println(p)
     val msg = Message(recipient, body)
-//
+    //
     val encodedMsg = msg.asJson.noSpaces
     // {"recipient":"@marcin","body":"How are you?"}
     println(body)
@@ -55,6 +55,6 @@ object CirceRefinedExample {
     // Right(Message(marcin,How are you?))
 
     println(decode[Message]("""{ "recipient": "", "body": "How are you?" }"""))
-//     Left(DecodingFailure(Predicate isEmpty() did not fail., List(DownField(recipient))))
+    //     Left(DecodingFailure(Predicate isEmpty() did not fail., List(DownField(recipient))))
   }
 }

@@ -6,7 +6,6 @@ import pureconfig.ConfigReader
 import pureconfig.generic.semiauto._
 import eu.timepit.refined.auto._
 import eu.timepit.refined.pureconfig._
-//import eu.timepit.refined.pureconfig._ very important
 final case class ApiConfig(host: NonEmptyString, port: PortNumber)
 
 object ApiConfig {

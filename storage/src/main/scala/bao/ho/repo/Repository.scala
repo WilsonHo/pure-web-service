@@ -8,7 +8,7 @@ import fs2._
 trait Repository[F[_]] {
   def loadProduct(id: ProductId): F[List[Result]]
 
-  def loadProducts(): Stream[F, (ProductId, LanguageCode, ProductName)]
+  def loadProducts(): Stream[F, Result]
 
   def saveProduct(p: Product): F[Int]
 
@@ -16,5 +16,5 @@ trait Repository[F[_]] {
 }
 
 object Repository {
-  case class Result(pid: ProductId, lan: LanguageCode, pName: ProductName)
+  case class Result(productId: ProductId, langCode: LanguageCode, productName: ProductName)
 }
